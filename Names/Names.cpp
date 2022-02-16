@@ -1,8 +1,36 @@
 ﻿#include "Names.h"
 #include <iostream>
+#include <iterator>
+#include <algorithm>
 
-Person::Person()
+void Person::ChangeFirstName(int year, const string& first_name)
 {
+    first_name_changing[year] = first_name;
+}
+
+void Person::ChangeLastName(int year, const string& last_name)
+{
+    last_name_changing[year] = last_name;
+}
+
+string Person::GetFullName(int year)
+{
+    auto name = first_name_changing.upper_bound(year);
+    auto surname = last_name_changing.upper_bound(year);
+
+    if (name != first_name_changing.begin() && surname != last_name_changing.begin())
+    {
+        return prev(name)->second + " " + prev(surname)->second;
+    }
+    else if (name != first_name_changing.begin() && surname == last_name_changing.begin())
+    {
+        return prev(name)->second + " with unknown last name";
+    }
+    else if (name == first_name_changing.begin() && surname != last_name_changing.begin())
+    {
+        return prev(surname)->second + " with unknown first name";
+    }
+    return "Incognito";
 
 }
 
